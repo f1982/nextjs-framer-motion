@@ -2,39 +2,15 @@
 
 import { Variant, motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
-
-type AnimatedTextProps = {
-  text: string | string[];
-  el?: keyof JSX.IntrinsicElements;
-  className?: string;
-  once?: boolean;
-  repeatDelay?: number;
-  animation?: {
-    hidden: Variant;
-    visible: Variant;
-  };
-};
-
-const defaultAnimations = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.2,
-    },
-  },
-};
+import { AnimatedTextProps, defaultAnimations } from "./animated-utils";
 
 export const AnimatedText = ({
   text,
   el: Wrapper = "p",
   className,
   once,
-  repeatDelay,
+  showDelay = 0,
+  repeatDelay = 1000,
   animation = defaultAnimations,
 }: AnimatedTextProps) => {
   const controls = useAnimation();
@@ -43,9 +19,13 @@ export const AnimatedText = ({
   const isInView = useInView(ref, { amount: 0.5, once });
 
   useEffect(() => {
+    let timeout1: NodeJS.Timeout;
     let timeout: NodeJS.Timeout;
     const show = () => {
-      controls.start("visible");
+      timeout1 = setTimeout(async () => {
+        controls.start("visible");
+      }, showDelay);
+
       if (repeatDelay) {
         timeout = setTimeout(async () => {
           await controls.start("hidden");
@@ -60,7 +40,10 @@ export const AnimatedText = ({
       controls.start("hidden");
     }
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      clearTimeout(timeout1);
+    };
   }, [isInView]);
 
   return (

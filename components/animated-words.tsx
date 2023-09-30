@@ -1,35 +1,8 @@
 "use client";
 
-import { Variant, motion, useAnimation, useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
-
-type AnimatedWordProps = {
-  text: string | string[];
-  el?: keyof JSX.IntrinsicElements;
-  className?: string;
-  once?: boolean;
-  repeatDelay?: number;
-  animation?: {
-    hidden: Variant;
-    visible: Variant;
-  };
-};
-
-const defaultAnimations = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-    x: 40,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    x: 0,
-    transition: {
-      duration: 0.2,
-    },
-  },
-};
+import { motion, useAnimation, useInView } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { AnimatedTextProps, defaultAnimations } from "./animated-utils";
 
 export const AnimatedWord = ({
   text,
@@ -38,7 +11,7 @@ export const AnimatedWord = ({
   once,
   repeatDelay,
   animation = defaultAnimations,
-}: AnimatedWordProps) => {
+}: AnimatedTextProps) => {
   const controls = useAnimation();
   const textArray = Array.isArray(text) ? text : [text];
   const ref = useRef(null);
@@ -82,7 +55,6 @@ export const AnimatedWord = ({
           <span className="block" key={`${line}-${lineIndex}`}>
             {line.split(" ").map((word, wordIndex) => (
               <span className="inline-block" key={`${word}-${wordIndex}`}>
-                {/* {word.split("").map((char, charIndex) => ( */}
                 <motion.span
                   key={`${word}-${wordIndex}`}
                   className="inline-block"
@@ -90,7 +62,6 @@ export const AnimatedWord = ({
                 >
                   {word}
                 </motion.span>
-                {/* ))} */}
                 <span className="inline-block">&nbsp;</span>
               </span>
             ))}
