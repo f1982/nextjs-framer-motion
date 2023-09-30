@@ -1,4 +1,4 @@
-import QuoteStandard from "@/components/quote-standard";
+import QuoteStandard from "@/components/quote/quote-present";
 
 export default function Page() {
   return (

@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={`antialiased bg-black dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="mx-auto min-h-screen w-full flex-1 flex flex-col bg-gray py-10 px-4">
+          <div className="mx-auto min-h-screen w-full flex-1 flex flex-col bg-gray">
             <header>
               <div className="flex items-center justify-between">
                 <ModeToggle />

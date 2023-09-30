@@ -1,5 +1,5 @@
 import { allPosts } from "@/.contentlayer/generated";
-import { AnimatedText } from "@/components/animated-text";
+import { AnimatedText } from "@/components/quote/animated-char";
 import Link from "next/link";
 
 export default function Home() {
