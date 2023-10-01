@@ -26,7 +26,7 @@ const imageUrls = [
 
 export function QuoteBackground() {
   const imgBgUrl = sample(imageUrls);
-  const cornerImgUrl = "martin-luther-king.png";
+
   // const cornerImgUrl = "lao_zi.png";
 
   const imageUrl = sample(imageUrls)!;
@@ -35,7 +35,7 @@ export function QuoteBackground() {
   // return <VideoBackground url={videoBgUrl} />;
   return (
     <>
-      <BackgroundPlayer bgUrl={videoBgUrl} cornerImageUrl={cornerImgUrl} />
+      <BackgroundPlayer bgUrl={videoBgUrl} />
     </>
   );
 }
@@ -53,18 +53,10 @@ export function ImageBackground({ url }: { url: string }) {
     <div
       className="absolute w-full h-full bg-no-repeat bg-cover"
       style={{
-        backgroundImage: `url("/${url}")`,
+        backgroundImage: `url("${url}")`,
       }}
     ></div>
   );
-}
-
-{
-  /* <motion.div
-    initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5 }}
-  /> */
 }
 
 export function CornerImage({ url }: { url: string }) {
@@ -75,19 +67,13 @@ export function CornerImage({ url }: { url: string }) {
       transition={{ duration: 2 }}
       className="absolute md:w-2/5 w-4/5 md:h-full h-2/3 bg-no-repeat bg-contain right-0 bottom-0 bg-right-bottom z-50"
       style={{
-        backgroundImage: `url("/${url}")`,
+        backgroundImage: `url("${url}")`,
       }}
     ></motion.div>
   );
 }
 
-export function BackgroundPlayer({
-  bgUrl,
-  cornerImageUrl,
-}: {
-  bgUrl: string;
-  cornerImageUrl: string;
-}) {
+export function BackgroundPlayer({ bgUrl }: { bgUrl: string }) {
   return (
     <>
       {bgUrl.indexOf("mp4") === -1 ? (
@@ -95,7 +81,6 @@ export function BackgroundPlayer({
       ) : (
         <VideoBackground url={bgUrl} />
       )}
-      {cornerImageUrl && <CornerImage url={cornerImageUrl} />}
     </>
   );
 }
