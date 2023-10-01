@@ -41,7 +41,8 @@ interface QuotePresentProps {
   imageUrls?: string[];
   musicUrls?: string[];
   animation?: object;
-  delay?: number;
+  duration?: number;
+  callback?: () => void;
 }
 
 export default function QuotePresent(props: QuotePresentProps) {
@@ -59,7 +60,7 @@ export default function QuotePresent(props: QuotePresentProps) {
     if (props.musicUrls) {
       setMusicUrl(sample(props.musicUrls));
     }
-  }, []);
+  }, [props.quote]);
 
   return (
     <div className="relative flex-1 w-full bg-black">
@@ -68,6 +69,7 @@ export default function QuotePresent(props: QuotePresentProps) {
       <QuoteText
         paragraph={props.quote.paragraph}
         author={props.quote.author}
+        callback={() => props.callback?.()}
       />
       {musicUrl && <AudioPlayer url={musicUrl} />}
     </div>
@@ -79,11 +81,15 @@ export function QuoteText({
   author = "",
   header = "",
   footer = "",
+  duration = 10,
+  callback = undefined,
 }: {
   paragraph: string;
   author?: string;
   header?: string;
   footer?: string;
+  duration?: number;
+  callback?: () => void;
 }) {
   const [sentences, setSentences] = useState<string[]>([]);
 
@@ -101,21 +107,25 @@ export function QuoteText({
   return (
     <div className="absolute w-full h-full flex-1 flex flex-col justify-center items-center gap-6 text-white">
       <div className="mt-9">{header}</div>
+      <p>{paragraph}</p>
       <div className="w-full max-w-6xl md:p-9 p-3 flex-1 flex flex-col justify-center items-center">
-        <AnimatedWord
-          text={paragraph}
-          className="md:text-4xl text-2xl md:leading-loose italic font-extrabold drop-shadow-lg"
-          animation={animations}
-          delay={10000}
-          callback={() => {
-            console.log("hide finished");
-          }}
-        />
+        {paragraph && (
+          <AnimatedWord
+            text={paragraph}
+            className="md:text-4xl text-2xl md:leading-loose italic font-extrabold drop-shadow-lg"
+            animation={animations}
+            delay={duration * 1000}
+            callback={() => {
+              callback?.();
+              console.log("hide finished");
+            }}
+          />
+        )}
         <AnimatedText
-          showDelay={5000}
+          showDelay={(duration / 3) * 1000}
           text={["By " + author]}
           className="my-6 max-w-3xl md:text-3xl text-md w-full text-right drop-shadow-lg"
-          delay={5000}
+          delay={(duration / 2) * 1000}
         />
       </div>
       <div className="text-right mb-6">{footer}</div>

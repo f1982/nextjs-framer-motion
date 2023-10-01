@@ -25,6 +25,7 @@ export const AnimatedWord = ({
       if (delay) {
         timeout = setTimeout(async () => {
           await controls.start("hidden");
+          controls.stop();
           if (callback) {
             callback();
           }
@@ -39,7 +40,12 @@ export const AnimatedWord = ({
     }
 
     return () => clearTimeout(timeout);
-  }, [isInView]);
+  }, [isInView, text]);
+
+  // useEffect(() => {
+  //   console.log("animation init");
+  //   controls.start("visible");
+  // }, [text]);
 
   return (
     <Wrapper className={className}>
