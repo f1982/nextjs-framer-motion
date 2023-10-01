@@ -6,7 +6,8 @@ export type AnimatedTextProps = {
   className?: string;
   once?: boolean;
   showDelay?: number;
-  repeatDelay?: number;
+  delay?: number;
+  callback?: () => void;
   animation?: {
     hidden: Variant;
     visible: Variant;

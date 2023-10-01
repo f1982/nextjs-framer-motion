@@ -9,7 +9,8 @@ export const AnimatedWord = ({
   el: Wrapper = "p",
   className,
   once,
-  repeatDelay,
+  delay,
+  callback,
   animation = defaultAnimations,
 }: AnimatedTextProps) => {
   const controls = useAnimation();
@@ -21,11 +22,13 @@ export const AnimatedWord = ({
     let timeout: NodeJS.Timeout;
     const show = () => {
       controls.start("visible");
-      if (repeatDelay) {
+      if (delay) {
         timeout = setTimeout(async () => {
           await controls.start("hidden");
-          controls.start("visible");
-        }, repeatDelay);
+          if (callback) {
+            callback();
+          }
+        }, delay);
       }
     };
 
@@ -47,7 +50,7 @@ export const AnimatedWord = ({
         animate={controls}
         variants={{
           visible: { transition: { staggerChildren: 0.1 } },
-          hidden: {},
+          hidden: { transition: { staggerChildren: 0.1 } },
         }}
         aria-hidden
       >

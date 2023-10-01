@@ -7,14 +7,14 @@ import { AnimatedWord } from "./animated-words";
 import { AudioPlayer } from "./audio-player";
 import { BackgroundPlayer, CornerImage } from "./quote-background";
 
-interface QuoteProps {
-  quote: string;
-  prefix?: string;
+export interface QuoteData {
+  paragraph: string;
   author?: string;
-  backgroundUrls?: string[];
-  imageUrls?: string[];
-  musicUrls?: string[];
-  animation?: object;
+  from?: string;
+  category?: string;
+  tag?: string;
+  explanation?: string;
+  url?: string;
 }
 
 const animations = {
@@ -33,7 +33,18 @@ const animations = {
   },
 };
 
-export default function QuoteStandard(props: QuoteProps) {
+interface QuotePresentProps {
+  quote: QuoteData;
+  prefix?: string;
+  author?: string;
+  backgroundUrls?: string[];
+  imageUrls?: string[];
+  musicUrls?: string[];
+  animation?: object;
+  delay?: number;
+}
+
+export default function QuotePresent(props: QuotePresentProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>("");
   const [bgUrl, setBgUrl] = useState<string | undefined>("");
   const [musicUrl, setMusicUrl] = useState<string | undefined>("");
@@ -54,8 +65,10 @@ export default function QuoteStandard(props: QuoteProps) {
     <div className="relative flex-1 w-full bg-black">
       {imageUrl && <CornerImage url={imageUrl} />}
       {bgUrl && <BackgroundPlayer bgUrl={bgUrl} />}
-
-      <QuoteText paragraph={props.quote} author="By Somebody" />
+      <QuoteText
+        paragraph={props.quote.paragraph}
+        author={props.quote.author}
+      />
       {musicUrl && <AudioPlayer url={musicUrl} />}
     </div>
   );
@@ -63,12 +76,12 @@ export default function QuoteStandard(props: QuoteProps) {
 
 export function QuoteText({
   paragraph,
-  author,
+  author = "",
   header = "",
   footer = "",
 }: {
   paragraph: string;
-  author: string;
+  author?: string;
   header?: string;
   footer?: string;
 }) {
@@ -91,15 +104,18 @@ export function QuoteText({
       <div className="w-full max-w-6xl md:p-9 p-3 flex-1 flex flex-col justify-center items-center">
         <AnimatedWord
           text={paragraph}
-          className="md:text-5xl text-xl leading-12 font-extrabold drop-shadow-lg"
+          className="md:text-4xl text-2xl md:leading-loose italic font-extrabold drop-shadow-lg"
           animation={animations}
-          repeatDelay={10000}
+          delay={10000}
+          callback={() => {
+            console.log("hide finished");
+          }}
         />
         <AnimatedText
           showDelay={5000}
-          text={[author]}
-          className="mt-6 max-w-3xl md:text-3xl text-md w-full text-right drop-shadow-lg"
-          repeatDelay={15000}
+          text={["By " + author]}
+          className="my-6 max-w-3xl md:text-3xl text-md w-full text-right drop-shadow-lg"
+          delay={5000}
         />
       </div>
       <div className="text-right mb-6">{footer}</div>

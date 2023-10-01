@@ -10,7 +10,7 @@ export const AnimatedText = ({
   className,
   once,
   showDelay = 0,
-  repeatDelay = 1000,
+  delay = 1000,
   animation = defaultAnimations,
 }: AnimatedTextProps) => {
   const controls = useAnimation();
@@ -24,14 +24,13 @@ export const AnimatedText = ({
     const show = () => {
       timeout1 = setTimeout(async () => {
         controls.start("visible");
-      }, showDelay);
 
-      if (repeatDelay) {
-        timeout = setTimeout(async () => {
-          await controls.start("hidden");
-          controls.start("visible");
-        }, repeatDelay);
-      }
+        if (delay) {
+          timeout = setTimeout(async () => {
+            await controls.start("hidden");
+          }, delay);
+        }
+      }, showDelay);
     };
 
     if (isInView) {
@@ -55,7 +54,7 @@ export const AnimatedText = ({
         animate={controls}
         variants={{
           visible: { transition: { staggerChildren: 0.1 } },
-          hidden: {},
+          hidden: { transition: { staggerChildren: 0.1 } },
         }}
         aria-hidden
       >
