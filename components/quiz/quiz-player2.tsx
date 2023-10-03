@@ -8,14 +8,16 @@ export interface Quiz {
 
 interface QuizPlayerProps {
   quizData: Quiz[];
-  questionDurationInSeconds: number;
-  answerDurationInSeconds: number;
+  title?: string;
+  questionDurationInSeconds?: number;
+  answerDurationInSeconds?: number;
 }
 
 const QuizPlayer: React.FC<QuizPlayerProps> = ({
   quizData,
-  questionDurationInSeconds,
-  answerDurationInSeconds,
+  title = "",
+  questionDurationInSeconds = 5,
+  answerDurationInSeconds = 3,
 }) => {
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [showQuestion, setShowQuestion] = useState(true);
@@ -61,12 +63,15 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({
   };
 
   const replay = () => {
-    console.log("relay");
     setShowOver(false);
     setCurrentQuizIndex(0);
     setShowQuestion(true);
     setShowAnswer(false);
     setCountdown(questionDurationInSeconds);
+  };
+
+  const next = () => {
+    //jump to other page
   };
 
   const currentQuiz = quizData[currentQuizIndex];
@@ -78,12 +83,14 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({
         <>
           <h1>Game over</h1>
           <button onClick={replay}>Replay</button>
+          <button onClick={next}>Next</button>
         </>
       ) : (
         <>
           <h1 className="text-4xl">Number:{currentQuizIndex + 1}</h1>
           {showQuestion && (
             <QuestionView
+              title={title}
               question={currentQuiz.question}
               percentage={countdown / questionDurationInSeconds}
             />
@@ -103,15 +110,18 @@ const QuizPlayer: React.FC<QuizPlayerProps> = ({
 };
 
 const QuestionView = ({
+  title,
   question,
   percentage,
 }: {
+  title: string;
   question: string;
   percentage: number;
 }) => {
   return (
     <div className="w-full flex-1 flex flex-col gap-9 justify-center items-center bg-slate-100">
-      <p className="text-3xl">{question}</p>
+      <h2 className="mb-9 text-xl">{title}</h2>
+      <p className="text-8xl animate-bounce">{question}</p>
       <p>{percentage * 100}% seconds</p>
       <ProgressBar progress={percentage} />
     </div>
@@ -121,14 +131,10 @@ const QuestionView = ({
 const AnswerView = ({ answer }: { answer: string }) => {
   return (
     <div className="w-full flex-1 flex flex-col gap-9 justify-center items-center bg-slate-100">
-      <p className="text-3xl">Answer: {answer}</p>
+      <p className="text-3xl animation-pulse">Answer: {answer}</p>
     </div>
   );
 };
-
-// src/components/ProgressBar.tsx
-// import React from 'react';
-// import classNames from 'classnames';
 
 interface ProgressBarProps {
   progress: number; // Progress percentage (0-100)
@@ -141,9 +147,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress, color }) => {
   };
 
   return (
-    <div className="w-[300px] rounded-xl border-yellow-300 border-4">
+    <div className="w-[390px] rounded-xl border-yellow-300 border-4">
       <div
-        className="h-9 rounded-lg bg-gray-300"
+        className="h-9 rounded-lg bg-gray-300 ease-in-out transition-all duration-100"
         style={progressBarStyle}
       ></div>
     </div>

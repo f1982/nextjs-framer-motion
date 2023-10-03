@@ -4,20 +4,20 @@ import React from "react";
 // Mocked quiz data
 const mockQuizData: Quiz[] = [
   {
-    question: "What is the capital of France?",
+    question: "🐞 🫣",
     answer: "Paris",
     category: "Geography",
   },
   {
-    question: "What is 2 + 2?",
+    question: "👩 🚀 🫎",
     answer: "4",
     category: "Math",
   },
-  // {
-  //   question: 'Who wrote "Romeo and Juliet"?',
-  //   answer: "William Shakespeare",
-  //   category: "Literature",
-  // },
+  {
+    question: "🙂💅😘🙋‍♀️",
+    answer: "William Shakespeare",
+    category: "Literature",
+  },
 ];
 
 export default function Page() {
@@ -26,6 +26,7 @@ export default function Page() {
       <h1>Quiz App</h1>
       <QuizPlayer
         quizData={mockQuizData}
+        title="guess the movie"
         questionDurationInSeconds={5} // Adjust the durations as needed
         answerDurationInSeconds={3}
       />
