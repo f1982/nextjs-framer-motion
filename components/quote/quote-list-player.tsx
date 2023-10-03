@@ -66,13 +66,6 @@ export function QuoteListPlayer({ quotes }: { quotes: QuoteData[] }) {
     setCurrentIndex(index);
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     // setCurrentIndex((value) => value + 1);
-  //     handleNext();
-  //   }, 5000);
-  // }, []);
-
   useEffect(() => {
     let t = setTimeout(() => {
       // setCurrentIndex((value) => value + 1);

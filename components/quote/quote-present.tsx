@@ -112,6 +112,7 @@ export function QuoteText({
         {paragraph && (
           <AnimatedWord
             text={paragraph}
+            once={false}
             className="md:text-4xl text-2xl md:leading-loose italic font-extrabold drop-shadow-lg"
             animation={animations}
             delay={duration * 1000}
@@ -124,6 +125,7 @@ export function QuoteText({
         <AnimatedText
           showDelay={(duration / 3) * 1000}
           text={["By " + author]}
+          once={false}
           className="my-6 max-w-3xl md:text-3xl text-md w-full text-right drop-shadow-lg"
           delay={(duration / 2) * 1000}
         />

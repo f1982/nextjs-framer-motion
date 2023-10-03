@@ -1,0 +1,4 @@
+/* Remove the page transition option of layout-config */
+.PSPDFKit-Dropdown-Layout-Config tr:nth-child(2) {
+  display: none;
+}
